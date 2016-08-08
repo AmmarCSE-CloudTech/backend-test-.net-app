@@ -27,6 +27,15 @@ namespace ToDo.Tests
         }
 
         [TestMethod]
+        public void Get_ShouldReturnNullForNonExistantID()
+        {
+            var controller = new ToDoController();
+            var actualToDo = controller.Get(-1);
+
+            Assert.AreEqual(null, actualToDo);
+        }
+
+        [TestMethod]
         public void Post_ShouldInsertToDo()
         {
             ToDoDataAccess.ToDo insertToDo = new ToDoDataAccess.ToDo();
