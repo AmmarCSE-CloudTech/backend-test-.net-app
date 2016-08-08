@@ -19,12 +19,36 @@ namespace ToDo.Tests
             expectedToDo.Text = "test";
             expectedToDo.Added = new DateTime(2016, 8, 4);
             expectedToDo.Completed = false;
+
             var actualToDo = controller.Get(1);
-            Assert.AreEqual(expectedToDo.Id, actualToDo.Id);
-            Assert.AreEqual(expectedToDo.UserId, actualToDo.UserId);
-            Assert.AreEqual(expectedToDo.Text, actualToDo.Text);
-            Assert.AreEqual(expectedToDo.Added, actualToDo.Added);
-            Assert.AreEqual(expectedToDo.Completed, actualToDo.Completed);
+
+            CompareToDos(expectedToDo, actualToDo);
+        }
+
+        [TestMethod]
+        public void Post_ShouldInsertToDo()
+        {
+            ToDoDataAccess.ToDo insertToDo = new ToDoDataAccess.ToDo();
+            insertToDo.UserId = 1;
+            insertToDo.Text = "insert test";
+            insertToDo.Added = new DateTime(2016, 8, 5);
+            insertToDo.Completed = false;
+
+            var controller = new ToDoController();
+            insertToDo = controller.Post(insertToDo);
+
+            var actualToDo = controller.Get(insertToDo.Id);
+
+            CompareToDos(insertToDo, actualToDo);
+        }
+
+        private void CompareToDos(ToDoDataAccess.ToDo expected, ToDoDataAccess.ToDo actual)
+        {
+            Assert.AreEqual(expected.Id, actual.Id);
+            Assert.AreEqual(expected.UserId, actual.UserId);
+            Assert.AreEqual(expected.Text, actual.Text);
+            Assert.AreEqual(expected.Added, actual.Added);
+            Assert.AreEqual(expected.Completed, actual.Completed);
         }
     }
 }
