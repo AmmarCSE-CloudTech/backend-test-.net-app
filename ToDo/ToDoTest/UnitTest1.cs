@@ -4,11 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ToDoTest
 {
     [TestClass]
-    public class UnitTest1
+    public class TestToDoController
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestGet_ShouldReturnNull()
         {
+            var controller = new Tod
+
+            Assert.AreEqual(null, controller.Get());
         }
     }
 }
