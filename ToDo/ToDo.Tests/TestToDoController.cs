@@ -12,7 +12,14 @@ namespace ToDo.Tests
         {
             var controller = new ToDoController();
 
-            Assert.AreEqual(null, controller.Get());
+            Assert.AreEqual(null, controller.Get(null));
+        }
+        [TestMethod]
+        public void Get_ShouldReturnToDo()
+        {
+            var controller = new ToDoController();
+
+            Assert.AreEqual(null, controller.Get(1));
         }
     }
 }
