@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
-namespace ToDo.Controllers
+namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
-    public class ToDoController : Controller
+    public class ValuesController : Controller
     {
         // GET: api/values
         [HttpGet]

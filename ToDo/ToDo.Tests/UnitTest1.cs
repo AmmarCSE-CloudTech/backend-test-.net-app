@@ -1,14 +1,18 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ToDo.Controllers;
 
 namespace ToDo.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class TestToDoController 
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Get_ShouldReturnNull()
         {
+            var controller = new ToDoController();
+
+            Assert.AreEqual(null, controller.Get());
         }
     }
 }
