@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\ToDoDataAccess\bin\Debug\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
     <Reference Include="System" />
@@ -45,7 +48,7 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ToDo\bin\System.Web.Http.dll</HintPath>
+      <HintPath>..\ToDoApp\bin\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -56,10 +59,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToDo\ToDo.csproj">
-      <Project>{5593379C-C3CC-4CC6-954C-BEE1B8A2307F}</Project>
-      <Name>ToDo</Name>
+    <ProjectReference Include="..\ToDoApp\ToDoApp.csproj">
+      <Project>{5593379c-c3cc-4cc6-954c-bee1b8a2307f}</Project>
+      <Name>ToDoApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ToDoDataAccess\ToDoDataAccess.csproj">
+      <Project>{2C6B423B-BA9D-4B28-91A5-DEF93B642920}</Project>
+      <Name>ToDoDataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

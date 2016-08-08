@@ -4,18 +4,25 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ToDoDataAccess;
 
-namespace ToDo.Controllers
+namespace ToDoApp.Controllers
 {
-
     [Route("api/[controller]")]
     public class ToDoController : ApiController
     {
+        private ToDoRepository toDoRepository { get; set; }
+
+        public ToDoController()
+        {
+            toDoRepository = new ToDoRepository();
+        }
+
         // GET: api/values
         [HttpGet]
-        public Object Get(int? id)
+        public ToDo Get(int id)
         {
-            return null;
+            return toDoRepository.Get(id);
         }
     }
 }
