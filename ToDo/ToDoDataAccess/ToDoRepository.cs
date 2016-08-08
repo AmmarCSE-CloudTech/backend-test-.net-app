@@ -19,5 +19,13 @@ namespace ToDoDataAccess
         {
             return dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
         }
+
+        public ToDo Insert(ToDo toDo)
+        {
+            dbContext.ToDoes.Add(toDo);
+            dbContext.SaveChanges();
+
+            return dbContext.ToDoes.FirstOrDefault(t => t.Id == toDo.Id);
+        }
     }
 }

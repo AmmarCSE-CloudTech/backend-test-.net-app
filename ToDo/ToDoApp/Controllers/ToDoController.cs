@@ -18,11 +18,18 @@ namespace ToDoApp.Controllers
             toDoRepository = new ToDoRepository();
         }
 
-        // GET: api/values
+        // GET: api/todo
         [HttpGet]
         public ToDo Get(int id)
         {
             return toDoRepository.Get(id);
+        }
+
+        // POST api/todo
+        [HttpPost]
+        public ToDo Post(ToDo toDo)
+        {
+            return toDoRepository.Insert(toDo);
         }
     }
 }

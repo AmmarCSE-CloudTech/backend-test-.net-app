@@ -14,13 +14,14 @@ namespace ToDo.Tests
             var controller = new ToDoController();
 
             ToDoDataAccess.ToDo expectedToDo = new ToDoDataAccess.ToDo();
-            expectedToDo.Id = 1;
             expectedToDo.UserId = 1;
-            expectedToDo.Text = "test";
+            expectedToDo.Text = "get test";
             expectedToDo.Added = new DateTime(2016, 8, 4);
             expectedToDo.Completed = false;
 
-            var actualToDo = controller.Get(1);
+            expectedToDo = controller.Post(expectedToDo);
+
+            var actualToDo = controller.Get(expectedToDo.Id);
 
             CompareToDos(expectedToDo, actualToDo);
         }
