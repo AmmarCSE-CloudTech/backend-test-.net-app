@@ -62,6 +62,21 @@ namespace ToDo.Tests
             CompareToDos(updateToDo, actualToDo);
         }
 
+        [TestMethod]
+        public void Delete_ShouldDeleteToDo()
+        {
+            var controller = new ToDoController();
+
+            ToDoDataAccess.ToDo deleteToDo = TestSample;
+            deleteToDo = controller.Post(deleteToDo);
+
+            controller.Delete(deleteToDo.Id);
+
+            var actualToDo = controller.Get(deleteToDo.Id);
+
+            CompareToDos(null, actualToDo);
+        }
+
         private ToDoDataAccess.ToDo TestSample = new ToDoDataAccess.ToDo
         {
             Text = "test",
