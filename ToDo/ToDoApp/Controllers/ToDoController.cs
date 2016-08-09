@@ -31,5 +31,12 @@ namespace ToDoApp.Controllers
         {
             return toDoRepository.Insert(toDo);
         }
+
+        // PUT api/todo
+        [HttpPut]
+        public void Put(ToDo toDo)
+        {
+            toDoRepository.Update(toDo);
+        }
     }
 }

@@ -74,7 +74,7 @@ namespace ToDo.Tests
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual(expected.UserId, actual.UserId);
             Assert.AreEqual(expected.Text, actual.Text);
-            Assert.AreEqual(expected.Added, actual.Added);
+            Assert.AreEqual(expected.Added.ToShortDateString(), actual.Added.ToShortDateString());
             Assert.AreEqual(expected.Completed, actual.Completed);
         }
     }

@@ -10,22 +10,37 @@ namespace ToDoDataAccess
     {
         private ToDoEntities dbContext { get; set; }
 
-        public ToDoRepository()
-        {
-            dbContext = new ToDoEntities();
-        }
-
         public ToDo Get(int id)
         {
-            return dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
+            using (dbContext = new ToDoEntities())
+            {
+                return dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
+            }
         }
 
+        //some frameworks like to the new id
+        //however, the whole entity is more useful to our current application
         public ToDo Insert(ToDo toDo)
         {
-            dbContext.ToDoes.Add(toDo);
-            dbContext.SaveChanges();
+            using (dbContext = new ToDoEntities())
+            {
+                dbContext.ToDoes.Add(toDo);
+                dbContext.SaveChanges();
 
-            return dbContext.ToDoes.FirstOrDefault(t => t.Id == toDo.Id);
+                return dbContext.ToDoes.FirstOrDefault(t => t.Id == toDo.Id);
+            }
+        }
+
+        //some frameworks like to return a bool if the update succeeded
+        //however, that is not relevant to our current application
+        public void Update(ToDo toDo)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                var classRoomEntry = dbContext.Entry(toDo);
+                classRoomEntry.State = System.Data.Entity.EntityState.Modified;
+                dbContext.SaveChanges();
+            }
         }
     }
 }
