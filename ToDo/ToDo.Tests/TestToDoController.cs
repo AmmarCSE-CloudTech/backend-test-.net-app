@@ -13,16 +13,13 @@ namespace ToDo.Tests
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo expectedToDo = new ToDoDataAccess.ToDo();
-            expectedToDo.UserId = 1;
-            expectedToDo.Text = "get test";
-            expectedToDo.Added = new DateTime(2016, 8, 4);
-            expectedToDo.Completed = false;
-
+            ToDoDataAccess.ToDo expectedToDo = TestSample;
+            //first, insert the todo we will be testing the 'Get' with
             expectedToDo = controller.Post(expectedToDo);
 
             var actualToDo = controller.Get(expectedToDo.Id);
 
+            //now, see if the 'getting' part actually works
             CompareToDos(expectedToDo, actualToDo);
         }
 
@@ -38,20 +35,40 @@ namespace ToDo.Tests
         [TestMethod]
         public void Post_ShouldInsertToDo()
         {
-            ToDoDataAccess.ToDo insertToDo = new ToDoDataAccess.ToDo();
-            insertToDo.UserId = 1;
-            insertToDo.Text = "insert test";
-            insertToDo.Added = new DateTime(2016, 8, 5);
-            insertToDo.Completed = false;
-
             var controller = new ToDoController();
-            insertToDo = controller.Post(insertToDo);
 
-            var actualToDo = controller.Get(insertToDo.Id);
+            ToDoDataAccess.ToDo insertToDo = TestSample;
+            var actualToDo = controller.Post(insertToDo);
 
             CompareToDos(insertToDo, actualToDo);
         }
 
+        [TestMethod]
+        public void Put_ShouldUpdateToDo()
+        {
+            var controller = new ToDoController();
+
+            ToDoDataAccess.ToDo updateToDo = TestSample;
+            updateToDo = controller.Post(updateToDo);
+
+            updateToDo.Text = "update test";
+            updateToDo.Added = updateToDo.Added.AddDays(1);
+            updateToDo.Completed = true;
+
+            controller.Put(updateToDo);
+
+            var actualToDo = controller.Get(updateToDo.Id);
+
+            CompareToDos(updateToDo, actualToDo);
+        }
+
+        private ToDoDataAccess.ToDo TestSample = new ToDoDataAccess.ToDo
+        {
+            Text = "test",
+            Added = DateTime.Now,
+            Completed = false,
+            UserId = 1
+        };
         private void CompareToDos(ToDoDataAccess.ToDo expected, ToDoDataAccess.ToDo actual)
         {
             Assert.AreEqual(expected.Id, actual.Id);
