@@ -79,6 +79,23 @@ namespace ToDo.Tests
             TestHelper.CompareToDos(actualToDoBatch, updateToDoBatch);
         }
 
+        [TestMethod]
+        public void Delete_ShouldDeleteToDoBatch()
+        {
+            var controller = new ToDoBatchController();
+
+            List<ToDoDataAccess.ToDo> deleteToDoBatch = TestSample;
+            deleteToDoBatch = controller.Post(deleteToDoBatch);
+
+            List<int> toDoIds = deleteToDoBatch.Select(t => t.Id).ToList();
+
+            controller.Delete(toDoIds);
+
+            var actualToDoBatch = controller.Get(toDoIds);
+
+            Assert.AreEqual(0, actualToDoBatch.Count);
+        }
+
         private List<ToDoDataAccess.ToDo> TestSample = new List<ToDoDataAccess.ToDo>
         {
             new ToDoDataAccess.ToDo {
