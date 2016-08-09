@@ -55,6 +55,30 @@ namespace ToDo.Tests
             TestHelper.CompareToDos(actualToDoBatch, insertToDoBatch);
         }
 
+        [TestMethod]
+        public void Put_ShouldUpdateToDoBatch()
+        {
+            var controller = new ToDoBatchController();
+
+            List<ToDoDataAccess.ToDo> updateToDoBatch = TestSample;
+            updateToDoBatch = controller.Post(updateToDoBatch);
+
+            foreach(var toDo in updateToDoBatch)
+            {
+                toDo.Text += " update";
+                toDo.Completed = true;
+                toDo.Added.AddDays(1);
+            }
+
+            controller.Put(updateToDoBatch);
+
+            List<int> toDoIds = updateToDoBatch.Select(t => t.Id).ToList();
+
+            var actualToDoBatch = controller.Get(toDoIds);
+
+            TestHelper.CompareToDos(actualToDoBatch, updateToDoBatch);
+        }
+
         private List<ToDoDataAccess.ToDo> TestSample = new List<ToDoDataAccess.ToDo>
         {
             new ToDoDataAccess.ToDo {
