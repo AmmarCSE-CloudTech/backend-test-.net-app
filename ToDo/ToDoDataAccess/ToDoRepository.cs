@@ -18,6 +18,31 @@ namespace ToDoDataAccess
             }
         }
 
+        public List<ToDo> GetBatch(int userId)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                List<int> toDoIds =
+                    dbContext
+                        .ToDoes
+                        .Where(t => t.UserId == userId)
+                        .Select(t => t.Id)
+                        .ToList();
+
+                return GetBatch(toDoIds);
+            }
+        }
+
+        public List<ToDo> GetBatch(List<int> ids)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                return dbContext
+                    .ToDoes
+                    .Where(t => ids.Contains(t.Id))
+                    .ToList();
+            }
+        }
         //some frameworks like to the new id
         //however, the whole entity is more useful to our current application
         public ToDo Insert(ToDo toDo)
@@ -27,7 +52,18 @@ namespace ToDoDataAccess
                 dbContext.ToDoes.Add(toDo);
                 dbContext.SaveChanges();
 
-                return dbContext.ToDoes.FirstOrDefault(t => t.Id == toDo.Id);
+                return toDo;
+            }
+        }
+
+        public List<ToDo> InsertBatch(List<ToDo> toDoBatch)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                dbContext.ToDoes.AddRange(toDoBatch);
+                dbContext.SaveChanges();
+
+                return toDoBatch;
             }
         }
 
