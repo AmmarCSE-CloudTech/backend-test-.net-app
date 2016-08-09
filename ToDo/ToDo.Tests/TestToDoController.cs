@@ -74,7 +74,7 @@ namespace ToDo.Tests
 
             var actualToDo = controller.Get(deleteToDo.Id);
 
-            CompareToDos(null, actualToDo);
+            Assert.AreEqual(null, actualToDo);
         }
 
         private ToDoDataAccess.ToDo TestSample = new ToDoDataAccess.ToDo

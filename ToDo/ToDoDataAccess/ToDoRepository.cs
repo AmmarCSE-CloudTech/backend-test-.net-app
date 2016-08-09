@@ -37,9 +37,23 @@ namespace ToDoDataAccess
         {
             using (dbContext = new ToDoEntities())
             {
-                var classRoomEntry = dbContext.Entry(toDo);
-                classRoomEntry.State = System.Data.Entity.EntityState.Modified;
+                var toDoEntry = dbContext.Entry(toDo);
+                toDoEntry.State = System.Data.Entity.EntityState.Modified;
                 dbContext.SaveChanges();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                var toDo = dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
+                if (toDo != null)
+                {
+                    var toDoEntry = dbContext.Entry(toDo);
+                    toDoEntry.State = System.Data.Entity.EntityState.Deleted;
+                    dbContext.SaveChanges();
+                }
             }
         }
     }

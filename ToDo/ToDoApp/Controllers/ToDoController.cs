@@ -38,5 +38,12 @@ namespace ToDoApp.Controllers
         {
             toDoRepository.Update(toDo);
         }
+
+        // DELETE api/todo
+        [HttpPut]
+        public void Delete(int id)
+        {
+            toDoRepository.Delete(id);
+        }
     }
 }
