@@ -25,6 +25,36 @@ namespace ToDo.Tests
             TestHelper.CompareToDos(expectedToDoBatch, actualToDoBatch);
         }
 
+        [TestMethod]
+        public void Get_ShouldReturnNullForNonExistantIDs()
+        {
+            var controller = new ToDoBatchController();
+
+            List<ToDoDataAccess.ToDo> expectedToDoBatch = TestSample;
+            expectedToDoBatch = controller.Post(expectedToDoBatch);
+
+            List<int> toDoIds = expectedToDoBatch.Select(t => t.Id).ToList();
+            //change one of the array items to check if its null
+            toDoIds[1] = -1;
+
+            //now, see if the length is 2 long instead of 3
+            var actualToDoBatch = controller.Get(toDoIds);
+            Assert.AreEqual(2, actualToDoBatch.Count);
+        }
+
+        //yes, there is redundancy since the insert is implicitly tested in the get test
+        //this is useful regardless, since the test area is broken down
+        [TestMethod]
+        public void Post_ShouldInsertToDoBatch()
+        {
+            var controller = new ToDoBatchController();
+
+            List<ToDoDataAccess.ToDo> insertToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> actualToDoBatch = controller.Post(insertToDoBatch);
+
+            TestHelper.CompareToDos(actualToDoBatch, insertToDoBatch);
+        }
+
         private List<ToDoDataAccess.ToDo> TestSample = new List<ToDoDataAccess.ToDo>
         {
             new ToDoDataAccess.ToDo {

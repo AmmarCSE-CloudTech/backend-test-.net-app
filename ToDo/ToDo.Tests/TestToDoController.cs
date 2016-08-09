@@ -31,6 +31,8 @@ namespace ToDo.Tests
             Assert.AreEqual(null, actualToDo);
         }
 
+        //yes, there is redundancy since the insert is implicitly tested in the get test
+        //this is useful regardless, since the test area is broken down
         [TestMethod]
         public void Post_ShouldInsertToDo()
         {
