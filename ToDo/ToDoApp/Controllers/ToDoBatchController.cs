@@ -19,25 +19,32 @@ namespace ToDoApp.Controllers
 
         /*overload GET methods to allow either user id or list of ids for convenience*/
 
-        // GET: api/todo - for user
+        // GET: api/todo-batch - for user
         [HttpGet]
         public List<ToDo> Get(int userId)
         {
             return toDoRepository.GetBatch(userId);
         }
 
-        // GET: api/todo - list of ids
+        // GET: api/todo-batch - list of ids
         [HttpGet]
         public List<ToDo> Get(List<int> ids)
         {
             return toDoRepository.GetBatch(ids);
         }
 
-        // POST: api/todo
+        // POST: api/todo-batch
         [HttpPost]
         public List<ToDo> Post(List<ToDo> toDos)
         {
             return toDoRepository.InsertBatch(toDos);
+        }
+
+        // PUT: api/todo-batch
+        [HttpPut]
+        public void Put(List<ToDo> toDos)
+        {
+            toDoRepository.UpdateBatch(toDos);
         }
     }
 }

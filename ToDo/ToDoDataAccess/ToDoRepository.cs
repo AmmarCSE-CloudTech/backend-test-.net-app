@@ -79,6 +79,20 @@ namespace ToDoDataAccess
             }
         }
 
+        public void UpdateBatch(List<ToDo> toDos)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                foreach (var toDo in toDos)
+                {
+                    var toDoEntry = dbContext.Entry(toDo);
+                    toDoEntry.State = System.Data.Entity.EntityState.Modified;
+                }
+
+                dbContext.SaveChanges();
+            }
+        }
+
         public void Delete(int id)
         {
             using (dbContext = new ToDoEntities())
