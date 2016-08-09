@@ -17,10 +17,9 @@ namespace ToDo.Tests
             //first, insert the todo we will be testing the 'Get' with
             expectedToDo = controller.Post(expectedToDo);
 
-            var actualToDo = controller.Get(expectedToDo.Id);
-
             //now, see if the 'getting' part actually works
-            CompareToDos(expectedToDo, actualToDo);
+            var actualToDo = controller.Get(expectedToDo.Id);
+            TestHelper.CompareToDos(expectedToDo, actualToDo);
         }
 
         [TestMethod]
@@ -40,7 +39,7 @@ namespace ToDo.Tests
             ToDoDataAccess.ToDo insertToDo = TestSample;
             var actualToDo = controller.Post(insertToDo);
 
-            CompareToDos(insertToDo, actualToDo);
+            TestHelper.CompareToDos(insertToDo, actualToDo);
         }
 
         [TestMethod]
@@ -59,7 +58,7 @@ namespace ToDo.Tests
 
             var actualToDo = controller.Get(updateToDo.Id);
 
-            CompareToDos(updateToDo, actualToDo);
+            TestHelper.CompareToDos(updateToDo, actualToDo);
         }
 
         [TestMethod]
@@ -84,13 +83,5 @@ namespace ToDo.Tests
             Completed = false,
             UserId = 1
         };
-        private void CompareToDos(ToDoDataAccess.ToDo expected, ToDoDataAccess.ToDo actual)
-        {
-            Assert.AreEqual(expected.Id, actual.Id);
-            Assert.AreEqual(expected.UserId, actual.UserId);
-            Assert.AreEqual(expected.Text, actual.Text);
-            Assert.AreEqual(expected.Added.ToShortDateString(), actual.Added.ToShortDateString());
-            Assert.AreEqual(expected.Completed, actual.Completed);
-        }
     }
 }
