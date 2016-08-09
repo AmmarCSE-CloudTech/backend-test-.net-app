@@ -106,5 +106,24 @@ namespace ToDoDataAccess
                 }
             }
         }
+
+        public void DeleteBatch(List<int> ids)
+        {
+            using (dbContext = new ToDoEntities())
+            {
+                var toDos = 
+                    dbContext
+                        .ToDoes
+                        .Where(t => ids.Contains(t.Id));
+
+                foreach(var toDo in toDos)
+                {
+                    var toDoEntry = dbContext.Entry(toDo);
+                    toDoEntry.State = System.Data.Entity.EntityState.Deleted;
+                }
+
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

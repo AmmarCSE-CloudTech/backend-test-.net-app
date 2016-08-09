@@ -46,5 +46,12 @@ namespace ToDoApp.Controllers
         {
             toDoRepository.UpdateBatch(toDos);
         }
+
+        // DELETE: api/todo-batch
+        [HttpDelete]
+        public void Delete(List<int> toDoIds)
+        {
+            toDoRepository.DeleteBatch(toDoIds);
+        }
     }
 }
