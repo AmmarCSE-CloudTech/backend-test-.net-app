@@ -14,7 +14,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoBatchController();
 
-            List<ToDoDataAccess.ToDo> expectedToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> expectedToDoBatch = TestHelper.TestBatchSample;
             //first, insert the todo batch we will be testing the 'Get' with
             expectedToDoBatch = controller.Post(expectedToDoBatch);
 
@@ -30,7 +30,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoBatchController();
 
-            List<ToDoDataAccess.ToDo> expectedToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> expectedToDoBatch = TestHelper.TestBatchSample;
             expectedToDoBatch = controller.Post(expectedToDoBatch);
 
             List<int> toDoIds = expectedToDoBatch.Select(t => t.Id).ToList();
@@ -49,7 +49,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoBatchController();
 
-            List<ToDoDataAccess.ToDo> insertToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> insertToDoBatch = TestHelper.TestBatchSample;
             List<ToDoDataAccess.ToDo> actualToDoBatch = controller.Post(insertToDoBatch);
 
             TestHelper.CompareToDos(actualToDoBatch, insertToDoBatch);
@@ -60,7 +60,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoBatchController();
 
-            List<ToDoDataAccess.ToDo> updateToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> updateToDoBatch = TestHelper.TestBatchSample;
             updateToDoBatch = controller.Post(updateToDoBatch);
 
             foreach(var toDo in updateToDoBatch)
@@ -84,7 +84,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoBatchController();
 
-            List<ToDoDataAccess.ToDo> deleteToDoBatch = TestSample;
+            List<ToDoDataAccess.ToDo> deleteToDoBatch = TestHelper.TestBatchSample;
             deleteToDoBatch = controller.Post(deleteToDoBatch);
 
             List<int> toDoIds = deleteToDoBatch.Select(t => t.Id).ToList();
@@ -96,26 +96,5 @@ namespace ToDo.Tests
             Assert.AreEqual(0, actualToDoBatch.Count);
         }
 
-        private List<ToDoDataAccess.ToDo> TestSample = new List<ToDoDataAccess.ToDo>
-        {
-            new ToDoDataAccess.ToDo {
-                Text = "test 1",
-                Added = DateTime.Now,
-                Completed = false,
-                UserId = 1
-            },
-            new ToDoDataAccess.ToDo {
-                Text = "test 2",
-                Added = DateTime.Now,
-                Completed = false,
-                UserId = 1
-            },
-            new ToDoDataAccess.ToDo {
-                Text = "test 3",
-                Added = DateTime.Now,
-                Completed = false,
-                UserId = 1
-            }
-        };
     }
 }

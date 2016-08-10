@@ -8,7 +8,7 @@ using ToDoDataAccess;
 
 namespace ToDoApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     public class ToDoController : ApiController
     {
         private ToDoRepository toDoRepository { get; set; }
@@ -18,17 +18,18 @@ namespace ToDoApi.Controllers
             toDoRepository = new ToDoRepository();
         }
 
-        // GET: api/todo
+        // GET: api/todo/id
         [HttpGet]
         public ToDo Get(int id)
         {
-            return toDoRepository.Get(id);
+            return toDoRepository.Get(id, User.Identity.Name);
         }
 
         // POST api/todo
         [HttpPost]
         public ToDo Post(ToDo toDo)
         {
+            toDo.UserId = User.Identity.Name;
             return toDoRepository.Insert(toDo);
         }
 
@@ -36,14 +37,18 @@ namespace ToDoApi.Controllers
         [HttpPut]
         public void Put(ToDo toDo)
         {
-            toDoRepository.Update(toDo);
+            //check that todo is for the authenticated user
+            if (toDo.UserId == User.Identity.Name)
+            {
+                toDoRepository.Update(toDo);
+            }
         }
 
-        // DELETE api/todo
-        [HttpPut]
+        // DELETE api/todo/id
+        [HttpDelete]
         public void Delete(int id)
         {
-            toDoRepository.Delete(id);
+            toDoRepository.Delete(id, User.Identity.Name);
         }
     }
 }

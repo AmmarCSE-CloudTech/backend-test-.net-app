@@ -9,6 +9,35 @@ namespace ToDo.Tests
 {
     public static class TestHelper
     {
+        public static string psuedoUserId = Guid.NewGuid().ToString();
+        public static ToDoDataAccess.ToDo TestSample = new ToDoDataAccess.ToDo
+        {
+            Text = "test",
+            Added = DateTime.Now,
+            Completed = false,
+            UserId = psuedoUserId
+        };
+        public static List<ToDoDataAccess.ToDo> TestBatchSample = new List<ToDoDataAccess.ToDo>
+        {
+            new ToDoDataAccess.ToDo {
+                Text = "test 1",
+                Added = DateTime.Now,
+                Completed = false,
+                UserId = psuedoUserId
+            },
+            new ToDoDataAccess.ToDo {
+                Text = "test 2",
+                Added = DateTime.Now,
+                Completed = false,
+                UserId = psuedoUserId
+            },
+            new ToDoDataAccess.ToDo {
+                Text = "test 3",
+                Added = DateTime.Now,
+                Completed = false,
+                UserId = psuedoUserId
+            }
+        };
         public static void CompareToDos(ToDoDataAccess.ToDo expected, ToDoDataAccess.ToDo actual)
         {
             Assert.AreEqual(expected.Id, actual.Id);

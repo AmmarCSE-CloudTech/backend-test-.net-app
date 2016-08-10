@@ -10,15 +10,15 @@ namespace ToDoDataAccess
     {
         private ToDoEntities dbContext { get; set; }
 
-        public ToDo Get(int id)
+        public ToDo Get(int id, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
-                return dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
+                return dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
             }
         }
 
-        public List<ToDo> GetBatch(int userId)
+        public List<ToDo> GetBatch(string userId)
         {
             using (dbContext = new ToDoEntities())
             {
@@ -29,21 +29,21 @@ namespace ToDoDataAccess
                         .Select(t => t.Id)
                         .ToList();
 
-                return GetBatch(toDoIds);
+                return GetBatch(toDoIds, userId);
             }
         }
 
-        public List<ToDo> GetBatch(List<int> ids)
+        public List<ToDo> GetBatch(List<int> ids, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
                 return dbContext
                     .ToDoes
-                    .Where(t => ids.Contains(t.Id))
+                    .Where(t => ids.Contains(t.Id) && t.UserId == userId)
                     .ToList();
             }
         }
-        //some frameworks like to the new id
+        //some frameworks like to return the new id
         //however, the whole entity is more useful to our current application
         public ToDo Insert(ToDo toDo)
         {
@@ -93,11 +93,11 @@ namespace ToDoDataAccess
             }
         }
 
-        public void Delete(int id)
+        public void Delete(int id, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
-                var toDo = dbContext.ToDoes.FirstOrDefault(t => t.Id == id);
+                var toDo = dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
                 if (toDo != null)
                 {
                     var toDoEntry = dbContext.Entry(toDo);
@@ -107,14 +107,14 @@ namespace ToDoDataAccess
             }
         }
 
-        public void DeleteBatch(List<int> ids)
+        public void DeleteBatch(List<int> ids, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
                 var toDos = 
                     dbContext
                         .ToDoes
-                        .Where(t => ids.Contains(t.Id));
+                        .Where(t => ids.Contains(t.Id) && t.UserId == userId);
 
                 foreach(var toDo in toDos)
                 {

@@ -51,19 +51,34 @@ namespace ToDoApi.Controllers
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-        // GET api/Account/UserInfo
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("UserInfo")]
-        public UserInfoViewModel GetUserInfo()
-        {
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            return new UserInfoViewModel
-            {
-                Email = User.Identity.GetUserName(),
-                HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
-            };
+        [Route("RegisterUserForTest")]
+        public async void RegisterUserForTest()
+        {
+            var guid = Guid.NewGuid().ToString();
+            var user = new ApplicationUser() { UserName = guid, Email = guid+"@123.com"};
+
+            IdentityResult result = await UserManager.CreateAsync(user, guid);
+        }
+        // GET api/Account/UserInfo
+        [Route("UserInfo")]
+        [AllowAnonymous]
+        public async void GetUserInfo()
+        {
+            var guid = Guid.NewGuid().ToString();
+            var user = new ApplicationUser() { UserName = guid, Email = guid+"@123.com"};
+
+            IdentityResult result = await UserManager.CreateAsync(user, guid+"1Aa@");
+
+            Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            
+             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                OAuthDefaults.AuthenticationType);
+            ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                CookieAuthenticationDefaults.AuthenticationType);
+
+            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
         }
 
         // POST api/Account/Logout

@@ -1,19 +1,26 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ToDoApi.Controllers;
-using ToDoDataAccess; 
+using ToDoDataAccess;
+using System.Threading;
+using System.Security.Principal;
 
 namespace ToDo.Tests
 {
     [TestClass]
     public class TestToDoController 
     {
+        public TestToDoController()
+        {
+            var identity = new GenericIdentity(TestHelper.psuedoUserId);
+            Thread.CurrentPrincipal = new GenericPrincipal(identity, null);
+        }
         [TestMethod]
         public void Get_ShouldReturnToDo()
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo expectedToDo = TestSample;
+            ToDoDataAccess.ToDo expectedToDo = TestHelper.TestSample;
             //first, insert the todo we will be testing the 'Get' with
             expectedToDo = controller.Post(expectedToDo);
 
@@ -38,7 +45,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo insertToDo = TestSample;
+            ToDoDataAccess.ToDo insertToDo = TestHelper.TestSample;
             var actualToDo = controller.Post(insertToDo);
 
             TestHelper.CompareToDos(insertToDo, actualToDo);
@@ -49,7 +56,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo updateToDo = TestSample;
+            ToDoDataAccess.ToDo updateToDo = TestHelper.TestSample;
             updateToDo = controller.Post(updateToDo);
 
             updateToDo.Text = "update test";
@@ -68,7 +75,7 @@ namespace ToDo.Tests
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo deleteToDo = TestSample;
+            ToDoDataAccess.ToDo deleteToDo = TestHelper.TestSample;
             deleteToDo = controller.Post(deleteToDo);
 
             controller.Delete(deleteToDo.Id);
@@ -77,13 +84,5 @@ namespace ToDo.Tests
 
             Assert.AreEqual(null, actualToDo);
         }
-
-        private ToDoDataAccess.ToDo TestSample = new ToDoDataAccess.ToDo
-        {
-            Text = "test",
-            Added = DateTime.Now,
-            Completed = false,
-            UserId = 1
-        };
     }
 }

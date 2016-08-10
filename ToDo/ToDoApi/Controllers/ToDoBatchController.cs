@@ -19,39 +19,48 @@ namespace ToDoApi.Controllers
 
         /*overload GET methods to allow either user id or list of ids for convenience*/
 
-        // GET: api/todo-batch - for user
+        // GET: api/todobatch - for user
         [HttpGet]
-        public List<ToDo> Get(int userId)
+        public List<ToDo> Get(string userId)
         {
             return toDoRepository.GetBatch(userId);
         }
 
-        // GET: api/todo-batch - list of ids
+        // GET: api/todobatch - list of ids
         [HttpGet]
         public List<ToDo> Get(List<int> ids)
         {
-            return toDoRepository.GetBatch(ids);
+            return toDoRepository.GetBatch(ids, User.Identity.Name);
         }
 
-        // POST: api/todo-batch
+        // POST: api/todobatch
         [HttpPost]
         public List<ToDo> Post(List<ToDo> toDos)
         {
+            foreach(var toDo in toDos)
+            {
+                toDo.UserId = User.Identity.Name;
+            }
+
             return toDoRepository.InsertBatch(toDos);
         }
 
-        // PUT: api/todo-batch
+        // PUT: api/todobatch
         [HttpPut]
         public void Put(List<ToDo> toDos)
         {
-            toDoRepository.UpdateBatch(toDos);
+            //check that all todos are for the authenticated user
+            if (toDos.Where(t => t.UserId != User.Identity.Name).Count() == 0)
+            {
+                toDoRepository.UpdateBatch(toDos);
+            }
         }
 
-        // DELETE: api/todo-batch
+        // DELETE: api/todobatch
         [HttpDelete]
         public void Delete(List<int> toDoIds)
         {
-            toDoRepository.DeleteBatch(toDoIds);
+            toDoRepository.DeleteBatch(toDoIds, User.Identity.Name);
         }
     }
 }

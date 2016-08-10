@@ -10,7 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Completed" Type="bit" />
@@ -28,7 +28,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Completed" Type="Boolean" />
