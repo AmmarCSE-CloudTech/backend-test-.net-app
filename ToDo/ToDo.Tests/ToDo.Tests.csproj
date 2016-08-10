@@ -63,9 +63,9 @@
     <Compile Include="TestToDoBatchController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToDoApp\ToDoApp.csproj">
-      <Project>{5593379c-c3cc-4cc6-954c-bee1b8a2307f}</Project>
-      <Name>ToDoApp</Name>
+    <ProjectReference Include="..\ToDoApi\ToDoApi.csproj">
+      <Project>{e596f388-06d4-48aa-a8ba-37ded767820b}</Project>
+      <Name>ToDoApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToDoDataAccess\ToDoDataAccess.csproj">
       <Project>{2C6B423B-BA9D-4B28-91A5-DEF93B642920}</Project>
