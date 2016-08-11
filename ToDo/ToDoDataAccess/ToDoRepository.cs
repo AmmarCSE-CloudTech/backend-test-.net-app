@@ -45,8 +45,10 @@ namespace ToDoDataAccess
         }
         //some frameworks like to return the new id
         //however, the whole entity is more useful to our current application
-        public ToDo Insert(ToDo toDo)
+        public ToDo Insert(ToDo toDo, string userId)
         {
+            toDo.UserId = userId;
+
             using (dbContext = new ToDoEntities())
             {
                 dbContext.ToDoes.Add(toDo);
@@ -56,8 +58,12 @@ namespace ToDoDataAccess
             }
         }
 
-        public List<ToDo> InsertBatch(List<ToDo> toDoBatch)
+        public List<ToDo> InsertBatch(List<ToDo> toDoBatch, string userId)
         {
+            foreach(var todo in toDoBatch)
+            {
+                todo.UserId = userId;
+            }
             using (dbContext = new ToDoEntities())
             {
                 dbContext.ToDoes.AddRange(toDoBatch);
@@ -69,24 +75,33 @@ namespace ToDoDataAccess
 
         //some frameworks like to return a bool if the update succeeded
         //however, that is not relevant to our current application
-        public void Update(ToDo toDo)
+        public void Update(ToDo toDo, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
                 var toDoEntry = dbContext.Entry(toDo);
-                toDoEntry.State = System.Data.Entity.EntityState.Modified;
-                dbContext.SaveChanges();
+                //check that todo is for the authenticated user
+                if (toDoEntry.Entity.UserId == userId)
+                {
+                    toDoEntry.State = System.Data.Entity.EntityState.Modified;
+                    dbContext.SaveChanges();
+                }
             }
         }
 
-        public void UpdateBatch(List<ToDo> toDos)
+        public void UpdateBatch(List<ToDo> toDos, string userId)
         {
             using (dbContext = new ToDoEntities())
             {
                 foreach (var toDo in toDos)
                 {
                     var toDoEntry = dbContext.Entry(toDo);
-                    toDoEntry.State = System.Data.Entity.EntityState.Modified;
+                    //check that todo is for the authenticated user
+                    if (toDoEntry.Entity.UserId == userId)
+                    {
+                        toDoEntry.State = System.Data.Entity.EntityState.Modified;
+                        dbContext.SaveChanges();
+                    }
                 }
 
                 dbContext.SaveChanges();

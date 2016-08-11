@@ -29,19 +29,14 @@ namespace ToDoApi.Controllers
         [HttpPost]
         public ToDo Post(ToDo toDo)
         {
-            toDo.UserId = User.Identity.Name;
-            return toDoRepository.Insert(toDo);
+            return toDoRepository.Insert(toDo, User.Identity.Name);
         }
 
         // PUT api/todo
         [HttpPut]
         public void Put(ToDo toDo)
         {
-            //check that todo is for the authenticated user
-            if (toDo.UserId == User.Identity.Name)
-            {
-                toDoRepository.Update(toDo);
-            }
+            toDoRepository.Update(toDo, User.Identity.Name);
         }
 
         // DELETE api/todo/id

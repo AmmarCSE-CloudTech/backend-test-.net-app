@@ -42,18 +42,14 @@ namespace ToDoApi.Controllers
                 toDo.UserId = User.Identity.Name;
             }
 
-            return toDoRepository.InsertBatch(toDos);
+            return toDoRepository.InsertBatch(toDos, User.Identity.Name);
         }
 
         // PUT: api/todobatch
         [HttpPut]
         public void Put(List<ToDo> toDos)
         {
-            //check that all todos are for the authenticated user
-            if (toDos.Where(t => t.UserId != User.Identity.Name).Count() == 0)
-            {
-                toDoRepository.UpdateBatch(toDos);
-            }
+            toDoRepository.UpdateBatch(toDos, User.Identity.Name);
         }
 
         // DELETE: api/todobatch
