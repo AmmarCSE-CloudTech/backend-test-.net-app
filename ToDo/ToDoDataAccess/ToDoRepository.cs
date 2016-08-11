@@ -14,15 +14,19 @@ namespace ToDoDataAccess
 
         public ToDo Get(int id, string userId)
         {
+            //Logger.info(id, userId);
             using (dbContext = new ToDoEntities())
             {
                 //double check by comparing against userId
-                return dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
+                var todo = dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
+                //Cache.DetermineWrite(todo);
+                return todo;
             }
         }
 
         public List<ToDo> GetBatch(string userId)
         {
+            //Logger.info(userId);
             using (dbContext = new ToDoEntities())
             {
                 //this and the 'batch' method both exhibit redundancy
@@ -42,15 +46,19 @@ namespace ToDoDataAccess
         {
             using (dbContext = new ToDoEntities())
             {
-                return dbContext
+                var result = dbContext
                     .ToDoes
                     .Where(t => ids.Contains(t.Id) && t.UserId == userId)
                     .ToList();
+                //Cache.DetermineWrite(result);
+
+                return result;
             }
         }
 
         public ToDo Insert(ToDo toDo, string userId)
         {
+            //Logger.info(toDo, userId);
             toDo.UserId = userId;
 
             using (dbContext = new ToDoEntities())
@@ -66,6 +74,7 @@ namespace ToDoDataAccess
 
         public List<ToDo> InsertBatch(List<ToDo> toDoBatch, string userId)
         {
+            //Logger.info(toDoBatch, userId);
             //ideally, this would be handled in some business layer
             foreach(var todo in toDoBatch)
             {
@@ -84,6 +93,7 @@ namespace ToDoDataAccess
         //however, that is not relevant to our current application
         public void Update(ToDo toDo, string userId)
         {
+            //Logger.info(toDo, userId);
             using (dbContext = new ToDoEntities())
             {
                 var toDoEntry = dbContext.Entry(toDo);
@@ -98,6 +108,7 @@ namespace ToDoDataAccess
 
         public void UpdateBatch(List<ToDo> toDos, string userId)
         {
+            //Logger.info(toDos, userId);
             using (dbContext = new ToDoEntities())
             {
                 foreach (var toDo in toDos)
@@ -117,6 +128,7 @@ namespace ToDoDataAccess
 
         public void Delete(int id, string userId)
         {
+            //Logger.info(id, userId);
             using (dbContext = new ToDoEntities())
             {
                 //double check that todo is for user by comparing ids
@@ -126,12 +138,14 @@ namespace ToDoDataAccess
                     var toDoEntry = dbContext.Entry(toDo);
                     toDoEntry.State = System.Data.Entity.EntityState.Deleted;
                     dbContext.SaveChanges();
+                    //Cache.DetermineRemove(toDoEntry);
                 }
             }
         }
 
         public void DeleteBatch(List<int> ids, string userId)
         {
+            //Logger.info(ids, userId);
             using (dbContext = new ToDoEntities())
             {
                 var toDos = 
@@ -146,6 +160,7 @@ namespace ToDoDataAccess
                 }
 
                 dbContext.SaveChanges();
+                //Cache.DetermineRemove(toDos);
             }
         }
     }

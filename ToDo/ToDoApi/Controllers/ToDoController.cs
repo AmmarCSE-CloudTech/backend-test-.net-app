@@ -22,6 +22,8 @@ namespace ToDoApi.Controllers
         [HttpGet]
         public ToDo Get(int id)
         {
+            //Logger.info(id);
+            //Cache.DetermineRead(id, User.Identity.Name);
             return toDoRepository.Get(id, User.Identity.Name);
         }
 
@@ -29,6 +31,7 @@ namespace ToDoApi.Controllers
         [HttpPost]
         public ToDo Post(ToDo toDo)
         {
+            //Logger.info(toDo);
             return toDoRepository.Insert(toDo, User.Identity.Name);
         }
 
@@ -36,6 +39,7 @@ namespace ToDoApi.Controllers
         [HttpPut]
         public void Put(ToDo toDo)
         {
+            //Logger.info(toDo);
             toDoRepository.Update(toDo, User.Identity.Name);
         }
 
@@ -43,6 +47,7 @@ namespace ToDoApi.Controllers
         [HttpDelete]
         public void Delete(int id)
         {
+            //Logger.info(id);
             toDoRepository.Delete(id, User.Identity.Name);
         }
     }

@@ -24,6 +24,8 @@ namespace ToDoApi.Controllers
         [HttpGet]
         public List<ToDo> Get()
         {
+            //Logger.info(toDo, userId);
+            //Cache.DetermineRead(User.Identity.Name);
             return toDoRepository.GetBatch(User.Identity.Name);
         }
 
@@ -31,6 +33,8 @@ namespace ToDoApi.Controllers
         [HttpGet]
         public List<ToDo> Get(List<int> ids)
         {
+            //Logger.info(ids);
+            //Cache.DetermineRead(ids, User.Identity.Name);
             //user GetBatch overload
             return toDoRepository.GetBatch(ids, User.Identity.Name);
         }
@@ -39,6 +43,7 @@ namespace ToDoApi.Controllers
         [HttpPost]
         public List<ToDo> Post(List<ToDo> toDos)
         {
+            //Logger.info(toDos);
             return toDoRepository.InsertBatch(toDos, User.Identity.Name);
         }
 
@@ -46,6 +51,7 @@ namespace ToDoApi.Controllers
         [HttpPut]
         public void Put(List<ToDo> toDos)
         {
+            //Logger.info(toDos);
             toDoRepository.UpdateBatch(toDos, User.Identity.Name);
         }
 
@@ -53,6 +59,7 @@ namespace ToDoApi.Controllers
         [HttpDelete]
         public void Delete(List<int> toDoIds)
         {
+            //Logger.info(toDoIds);
             toDoRepository.DeleteBatch(toDoIds, User.Identity.Name);
         }
     }
