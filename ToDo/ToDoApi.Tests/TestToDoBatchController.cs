@@ -3,12 +3,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using ToDoApi.Controllers;
+using System.Threading;
+using System.Security.Principal;
 
 namespace ToDoApi.Tests
 {
     [TestClass]
     public class TestToDoBatchController
     {
+        public TestToDoBatchController()
+        {
+            //mock user
+            //however, a better method to mock user needs to be implemented
+            //since, practically, a no-id user can pass the tests
+            var identity = new GenericIdentity(TestHelper.psuedoUserId);
+            Thread.CurrentPrincipal = new GenericPrincipal(identity, null);
+        }
+
         [TestMethod]
         public void Get_ShouldReturnToDoList()
         {
@@ -61,8 +72,10 @@ namespace ToDoApi.Tests
             var controller = new ToDoBatchController();
 
             List<ToDoDataAccess.ToDo> updateToDoBatch = TestHelper.TestBatchSample;
+            //first insert
             updateToDoBatch = controller.Post(updateToDoBatch);
 
+            //now, update
             foreach(var toDo in updateToDoBatch)
             {
                 toDo.Text += " update";
@@ -74,6 +87,7 @@ namespace ToDoApi.Tests
 
             List<int> toDoIds = updateToDoBatch.Select(t => t.Id).ToList();
 
+            //finally, compare the test sample with the real ones in the database
             var actualToDoBatch = controller.Get(toDoIds);
 
             TestHelper.CompareToDos(actualToDoBatch, updateToDoBatch);
@@ -93,6 +107,7 @@ namespace ToDoApi.Tests
 
             var actualToDoBatch = controller.Get(toDoIds);
 
+            //length 0 check should suffice since the service will not return anything
             Assert.AreEqual(0, actualToDoBatch.Count);
         }
 

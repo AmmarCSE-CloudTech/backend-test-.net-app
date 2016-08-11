@@ -8,6 +8,7 @@ using ToDoDataAccess;
 
 namespace ToDoApi.Controllers
 {
+    [Authorize]
     public class ToDoBatchController : ApiController
     {
         private ToDoRepository toDoRepository { get; set; }
@@ -17,19 +18,20 @@ namespace ToDoApi.Controllers
             toDoRepository = new ToDoRepository();
         }
 
-        /*overload GET methods to allow either user id or list of ids for convenience*/
+        /*overload GET methods to allow all or list of ids for convenience*/
 
         // GET: api/todobatch - for user
         [HttpGet]
-        public List<ToDo> Get(string userId)
+        public List<ToDo> Get()
         {
-            return toDoRepository.GetBatch(userId);
+            return toDoRepository.GetBatch(User.Identity.Name);
         }
 
         // GET: api/todobatch - list of ids
         [HttpGet]
         public List<ToDo> Get(List<int> ids)
         {
+            //user GetBatch overload
             return toDoRepository.GetBatch(ids, User.Identity.Name);
         }
 
@@ -37,11 +39,6 @@ namespace ToDoApi.Controllers
         [HttpPost]
         public List<ToDo> Post(List<ToDo> toDos)
         {
-            foreach(var toDo in toDos)
-            {
-                toDo.UserId = User.Identity.Name;
-            }
-
             return toDoRepository.InsertBatch(toDos, User.Identity.Name);
         }
 

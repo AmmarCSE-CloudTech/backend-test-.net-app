@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace ToDoDataAccess
 {
+    //nothing fancy(example, base entities with child entities)
+    //just a simple gateway to the ToDo table
     public class ToDoRepository 
     {
         private ToDoEntities dbContext { get; set; }
@@ -14,6 +16,7 @@ namespace ToDoDataAccess
         {
             using (dbContext = new ToDoEntities())
             {
+                //double check by comparing against userId
                 return dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
             }
         }
@@ -22,6 +25,8 @@ namespace ToDoDataAccess
         {
             using (dbContext = new ToDoEntities())
             {
+                //this and the 'batch' method both exhibit redundancy
+                //its probably better to just return the full entities here
                 List<int> toDoIds =
                     dbContext
                         .ToDoes
@@ -43,8 +48,7 @@ namespace ToDoDataAccess
                     .ToList();
             }
         }
-        //some frameworks like to return the new id
-        //however, the whole entity is more useful to our current application
+
         public ToDo Insert(ToDo toDo, string userId)
         {
             toDo.UserId = userId;
@@ -54,12 +58,15 @@ namespace ToDoDataAccess
                 dbContext.ToDoes.Add(toDo);
                 dbContext.SaveChanges();
 
+                //some frameworks like to return the new id
+                //however, the whole entity is more useful to our current application
                 return toDo;
             }
         }
 
         public List<ToDo> InsertBatch(List<ToDo> toDoBatch, string userId)
         {
+            //ideally, this would be handled in some business layer
             foreach(var todo in toDoBatch)
             {
                 todo.UserId = userId;
@@ -112,6 +119,7 @@ namespace ToDoDataAccess
         {
             using (dbContext = new ToDoEntities())
             {
+                //double check that todo is for user by comparing ids
                 var toDo = dbContext.ToDoes.FirstOrDefault(t => t.Id == id && t.UserId == userId);
                 if (toDo != null)
                 {

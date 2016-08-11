@@ -12,6 +12,9 @@ namespace ToDoApi.Tests
     {
         public TestToDoController()
         {
+            //mock user
+            //however, a better method to mock user needs to be implemented
+            //since, practically, a no-id user can pass the tests
             var identity = new GenericIdentity(TestHelper.psuedoUserId);
             Thread.CurrentPrincipal = new GenericPrincipal(identity, null);
         }
@@ -56,9 +59,11 @@ namespace ToDoApi.Tests
         {
             var controller = new ToDoController();
 
-            ToDoDataAccess.ToDo updateToDo = TestHelper.TestSample;
+            var updateToDo = TestHelper.TestSample;
+            //first insert
             updateToDo = controller.Post(updateToDo);
 
+            //now, update
             updateToDo.Text = "update test";
             updateToDo.Added = updateToDo.Added.AddDays(1);
             updateToDo.Completed = true;
@@ -67,6 +72,7 @@ namespace ToDoApi.Tests
 
             var actualToDo = controller.Get(updateToDo.Id);
 
+            //finally, compare the test sample with the real one in the database
             TestHelper.CompareToDos(updateToDo, actualToDo);
         }
 
@@ -82,6 +88,7 @@ namespace ToDoApi.Tests
 
             var actualToDo = controller.Get(deleteToDo.Id);
 
+            //null check here since the Get will not find it in the database
             Assert.AreEqual(null, actualToDo);
         }
     }
